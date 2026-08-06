@@ -1,0 +1,8 @@
+# Phishing URL Detector - bağımlılıklar
+# Kurulum: pip install -r requirements.txt
+
+requests>=2.31.0
+validators>=0.22.0
+tldextract>=5.1.0
+python-whois>=0.9.4
+beautifulsoup4>=4.12.0
