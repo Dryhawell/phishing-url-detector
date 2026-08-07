@@ -115,11 +115,13 @@ def get_domain_parts(url: str) -> dict[str, str]:
         subdomain, domain, suffix ve registered_domain anahtarlı sözlük.
     """
     extracted = tldextract.extract(url)
+    # top_domain_under_public_suffix: eski registered_domain ile aynı davranış.
+    registered = extracted.top_domain_under_public_suffix or ""
     return {
         "subdomain": extracted.subdomain or "",
         "domain": extracted.domain or "",
         "suffix": extracted.suffix or "",
-        "registered_domain": extracted.registered_domain or "",
+        "registered_domain": registered,
     }
 
 
