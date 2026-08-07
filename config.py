@@ -27,7 +27,13 @@ RISK_SCORES: Final[dict[str, int]] = {
     "too_many_digits": 15,
     "suspicious_tld": 25,
     "phishing_keyword": 15,
+    # İtibar (reputation) sinyalleri — WHOIS / domain yaşı
+    "very_new_domain": 25,
+    "whois_unavailable": 5,
 }
+
+# Domain bu günden daha yeni ise (gün cinsinden) "çok yeni" sayılır.
+NEW_DOMAIN_DAYS: Final[int] = 30
 
 # ---------------------------------------------------------------------------
 # Eşik değerler (threshold)
