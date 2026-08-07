@@ -130,13 +130,15 @@ Nedenler
 
 ## Screenshot
 
-> Add a GUI screenshot here after capturing your local window:
+Capture the GUI after a high-risk analysis and save it as:
 
-```text
-docs/screenshot.png
-```
+`docs/screenshot.png`
 
-Suggested capture: analyze a high-risk demo URL and show score + red status + findings panels.
+Then it will render below:
+
+![Phishing URL Detector GUI](docs/screenshot.png)
+
+If the image is not uploaded yet, GitHub will show a broken-image placeholder until you add the file.
 
 ---
 

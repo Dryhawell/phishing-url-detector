@@ -216,3 +216,14 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# ---------------------------------------------------------------------------
+# Project-specific
+# ---------------------------------------------------------------------------
+# Generated analysis reports (keep folder via reports/.gitkeep)
+reports/*.json
+!reports/.gitkeep
+
+# Local runtime artifacts
+phishing_detector.log
+.pytest_cache/
