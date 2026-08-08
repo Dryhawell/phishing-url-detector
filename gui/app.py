@@ -4,7 +4,7 @@ Tasarım hedefleri:
 - Koyu (dark) siber güvenlik teması
 - Risk seviyesine göre yeşil / sarı / kırmızı vurgu
 - Analiz işini threading ile arka planda çalıştırma
-  (WHOIS ağ çağrısı arayüzü kilitlemesin)
+- Oturum içi analiz geçmişi (HistoryStore)
 
 Bu modül yalnızca sunum katmanıdır; iş mantığı detector.analyzer'dadır.
 """
@@ -17,6 +17,7 @@ from tkinter import messagebox, ttk
 
 from detector.analyzer import AnalysisResult, analyze_url
 from detector.report import save_json_report, save_pdf_report
+from gui.history import HistoryStore
 from utils.logger import get_logger
 
 logger = get_logger()
@@ -48,12 +49,13 @@ class PhishingDetectorApp(tk.Tk):
     def __init__(self) -> None:
         super().__init__()
         self.title("Phishing URL Detector")
-        self.geometry("920x680")
-        self.minsize(780, 560)
+        self.geometry("960x760")
+        self.minsize(820, 640)
         self.configure(bg=COLORS["bg"])
 
         self._last_result: AnalysisResult | None = None
         self._is_analyzing = False
+        self._history = HistoryStore()
 
         self._build_style()
         self._build_layout()
@@ -62,20 +64,13 @@ class PhishingDetectorApp(tk.Tk):
     def _build_style(self) -> None:
         """ttk stilini koyu temaya göre ayarla."""
         style = ttk.Style(self)
-        # Windows'ta 'clam' özel renkleri daha iyi uygular.
         try:
             style.theme_use("clam")
         except tk.TclError:
             pass
 
-        style.configure(
-            "TFrame",
-            background=COLORS["bg"],
-        )
-        style.configure(
-            "Card.TFrame",
-            background=COLORS["panel"],
-        )
+        style.configure("TFrame", background=COLORS["bg"])
+        style.configure("Card.TFrame", background=COLORS["panel"])
         style.configure(
             "TLabel",
             background=COLORS["bg"],
@@ -147,12 +142,13 @@ class PhishingDetectorApp(tk.Tk):
             style="Subtitle.TLabel",
         ).pack(anchor=tk.W, pady=(4, 18))
 
-        # --- URL giriş satırı ---
         input_row = ttk.Frame(root, style="TFrame")
         input_row.pack(fill=tk.X, pady=(0, 12))
 
         self.url_var = tk.StringVar()
-        self.url_entry = ttk.Entry(input_row, textvariable=self.url_var, font=("Consolas", 11))
+        self.url_entry = ttk.Entry(
+            input_row, textvariable=self.url_var, font=("Consolas", 11)
+        )
         self.url_entry.pack(side=tk.LEFT, fill=tk.X, expand=True, padx=(0, 10))
         self.url_entry.bind("<Return>", lambda _event: self.start_analysis())
 
@@ -171,11 +167,12 @@ class PhishingDetectorApp(tk.Tk):
         )
         self.save_pdf_btn.pack(side=tk.LEFT)
 
-        # --- Skor kartı ---
         score_card = ttk.Frame(root, style="Card.TFrame", padding=16)
         score_card.pack(fill=tk.X, pady=(8, 12))
 
-        self.score_label = ttk.Label(score_card, text="Risk Skoru: —", style="Score.TLabel")
+        self.score_label = ttk.Label(
+            score_card, text="Risk Skoru: —", style="Score.TLabel"
+        )
         self.score_label.pack(anchor=tk.W)
 
         self.level_label = ttk.Label(
@@ -188,7 +185,6 @@ class PhishingDetectorApp(tk.Tk):
         )
         self.status_label.pack(anchor=tk.W, pady=(0, 8))
 
-        # --- Sonuç metin alanları ---
         body = ttk.Frame(root, style="TFrame")
         body.pack(fill=tk.BOTH, expand=True)
 
@@ -200,6 +196,43 @@ class PhishingDetectorApp(tk.Tk):
         right.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(8, 0))
         self.recommendations_text = right.text_widget
 
+        # --- Oturum geçmişi ---
+        history_card = ttk.Frame(root, style="Card.TFrame", padding=12)
+        history_card.pack(fill=tk.BOTH, expand=False, pady=(12, 0))
+
+        history_header = ttk.Frame(history_card, style="Card.TFrame")
+        history_header.pack(fill=tk.X)
+        ttk.Label(history_header, text="Analiz Geçmişi (oturum)", style="Card.TLabel").pack(
+            side=tk.LEFT
+        )
+        self.clear_history_btn = ttk.Button(
+            history_header, text="Temizle", command=self.clear_history
+        )
+        self.clear_history_btn.pack(side=tk.RIGHT)
+
+        list_frame = ttk.Frame(history_card, style="Card.TFrame")
+        list_frame.pack(fill=tk.BOTH, expand=True, pady=(8, 0))
+
+        self.history_list = tk.Listbox(
+            list_frame,
+            height=6,
+            bg=COLORS["input_bg"],
+            fg=COLORS["fg"],
+            selectbackground=COLORS["button_active"],
+            selectforeground=COLORS["fg"],
+            relief=tk.FLAT,
+            borderwidth=0,
+            font=("Consolas", 9),
+            activestyle="none",
+        )
+        scrollbar = ttk.Scrollbar(
+            list_frame, orient=tk.VERTICAL, command=self.history_list.yview
+        )
+        self.history_list.configure(yscrollcommand=scrollbar.set)
+        self.history_list.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+        self.history_list.bind("<<ListboxSelect>>", self._on_history_select)
+
     def _build_text_panel(self, parent: ttk.Frame, title: str) -> ttk.Frame:
         """Başlıklı salt okunur metin paneli üret."""
         panel = ttk.Frame(parent, style="Card.TFrame", padding=12)
@@ -208,7 +241,7 @@ class PhishingDetectorApp(tk.Tk):
         text = tk.Text(
             panel,
             wrap=tk.WORD,
-            height=18,
+            height=12,
             bg=COLORS["input_bg"],
             fg=COLORS["fg"],
             insertbackground=COLORS["fg"],
@@ -237,7 +270,9 @@ class PhishingDetectorApp(tk.Tk):
         self.analyze_btn.configure(state=tk.DISABLED)
         self.save_btn.configure(state=tk.DISABLED)
         self.save_pdf_btn.configure(state=tk.DISABLED)
-        self.status_label.configure(text="Analiz ediliyor... (WHOIS/HTML biraz sürebilir)")
+        self.status_label.configure(
+            text="Analiz ediliyor... (WHOIS/HTML biraz sürebilir)"
+        )
         self._set_text(self.problems_text, "Çalışıyor...")
         self._set_text(self.recommendations_text, "Çalışıyor...")
 
@@ -252,15 +287,18 @@ class PhishingDetectorApp(tk.Tk):
         """Worker thread: analyze_url çağır, sonucu UI thread'ine ilet."""
         try:
             result = analyze_url(raw_url)
-            self.after(0, lambda: self._on_analysis_done(result, None))
+            self.after(0, lambda: self._on_analysis_done(raw_url, result, None))
         except Exception as exc:  # noqa: BLE001
             logger.exception("GUI analiz hatası")
-            self.after(0, lambda: self._on_analysis_done(None, str(exc)))
+            self.after(0, lambda: self._on_analysis_done(raw_url, None, str(exc)))
 
     def _on_analysis_done(
-        self, result: AnalysisResult | None, error: str | None
+        self,
+        raw_url: str,
+        result: AnalysisResult | None,
+        error: str | None,
     ) -> None:
-        """UI thread: sonucu ekrana bas."""
+        """UI thread: sonucu ekrana bas ve geçmişe ekle."""
         self._is_analyzing = False
         self.analyze_btn.configure(state=tk.NORMAL)
 
@@ -269,16 +307,28 @@ class PhishingDetectorApp(tk.Tk):
             self._paint_level("ERROR", COLORS["high_risk"])
             self._set_text(self.problems_text, error or "Analiz başarısız.")
             self._set_text(self.recommendations_text, "Tekrar deneyin.")
+            self.save_btn.configure(state=tk.DISABLED)
+            self.save_pdf_btn.configure(state=tk.DISABLED)
             return
 
+        self._history.add(raw_url, result)
+        self._refresh_history_list()
+        self._display_result(result, from_history=False)
+
+    def _display_result(self, result: AnalysisResult, *, from_history: bool) -> None:
+        """Analiz sonucunu skor/problem/öneri panellerine yaz."""
         self._last_result = result
         self.save_btn.configure(state=tk.NORMAL)
         self.save_pdf_btn.configure(state=tk.NORMAL)
 
+        prefix = "Geçmişten yüklendi" if from_history else "Analiz tamamlandı"
+
         if not result.is_valid:
             self.score_label.configure(text="Risk Skoru: —")
             self._paint_level("INVALID", COLORS["suspicious"])
-            self.status_label.configure(text=result.error or "Geçersiz URL")
+            self.status_label.configure(
+                text=f"{prefix}: {result.error or 'Geçersiz URL'}"
+            )
             self._set_text(self.problems_text, result.error or "URL geçersiz.")
             self._set_text(
                 self.recommendations_text,
@@ -289,7 +339,7 @@ class PhishingDetectorApp(tk.Tk):
         color = self._color_for_level(result.risk_level)
         self.score_label.configure(text=f"Risk Skoru: {result.risk_score}")
         self._paint_level(result.risk_level, color)
-        self.status_label.configure(text=f"Analiz tamamlandı: {result.url}")
+        self.status_label.configure(text=f"{prefix}: {result.url}")
 
         problems = result.problems or ["Belirgin bir problem bulunamadı."]
         self._set_text(
@@ -300,6 +350,29 @@ class PhishingDetectorApp(tk.Tk):
             self.recommendations_text,
             "\n".join(f"• {tip}" for tip in result.recommendations),
         )
+
+    def _refresh_history_list(self) -> None:
+        """Listbox içeriğini HistoryStore ile senkronize et."""
+        self.history_list.delete(0, tk.END)
+        for label in self._history.labels:
+            self.history_list.insert(tk.END, label)
+
+    def _on_history_select(self, _event: object) -> None:
+        """Geçmiş satırına tıklanınca sonucu tekrar göster."""
+        selection = self.history_list.curselection()
+        if not selection:
+            return
+        entry = self._history.get(selection[0])
+        if entry is None:
+            return
+        self.url_var.set(entry.raw_input)
+        self._display_result(entry.result, from_history=True)
+
+    def clear_history(self) -> None:
+        """Oturum geçmişini temizle."""
+        self._history.clear()
+        self._refresh_history_list()
+        self.status_label.configure(text="Geçmiş temizlendi.")
 
     def save_report(self) -> None:
         """Son analizi JSON olarak kaydet."""

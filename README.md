@@ -53,7 +53,8 @@ phishing-url-detector/
 │   ├── batch.py            # Bulk TXT/CSV analysis
 │   └── report.py           # JSON/PDF report writers
 ├── gui/
-│   └── app.py              # Tkinter dark UI
+│   ├── app.py              # Tkinter dark UI
+│   └── history.py          # In-session analysis history
 ├── samples/                # Example URL lists for batch mode
 ├── utils/
 │   ├── helpers.py          # Parsing helpers
@@ -179,10 +180,10 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 
 - [x] PDF report export (`PdfReportWriter`)
 - [x] Batch URL analysis (CSV/TXT input)
+- [x] Richer GUI history panel (session)
 - [ ] Optional online reputation APIs (Safe Browsing / community blocklists)
 - [ ] Browser extension companion
 - [ ] Packaging (`pip install` / standalone executable)
-- [ ] Richer GUI history panel
 
 ---
 
