@@ -31,7 +31,7 @@ Built for real-world defensive security workflows and as a clean portfolio proje
   - `21–50` → SUSPICIOUS
   - `51–100` → HIGH RISK
 - **Dark cyber-themed Tkinter GUI** (green / yellow / red status colors)
-- **JSON reports** (PDF-ready writer interface for future expansion)
+- **JSON and PDF reports** (shared `ReportWriter` interface)
 - **Structured logging**
 - **Unit tests** with mocked network calls
 
@@ -97,7 +97,7 @@ python main.py
 1. Paste a URL into the input field  
 2. Click **Analiz Et** (or press Enter)  
 3. Review **Risk Skoru**, **Durum**, problems, and recommendations  
-4. Optionally click **JSON Kaydet** to export a report under `reports/`
+4. Optionally click **JSON Kaydet** or **PDF Kaydet** to export under `reports/`
 
 ### Programmatic (quick check)
 
@@ -162,7 +162,7 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 
 ## Roadmap / Future Plans
 
-- [ ] PDF report export (`PdfReportWriter`)
+- [x] PDF report export (`PdfReportWriter`)
 - [ ] Optional online reputation APIs (Safe Browsing / community blocklists)
 - [ ] Batch URL analysis (CSV/TXT input)
 - [ ] Browser extension companion

@@ -7,7 +7,7 @@ from pathlib import Path
 
 from detector.analyzer import AnalysisResult
 from detector.heuristics import HeuristicFinding
-from detector.report import build_report_payload, save_json_report
+from detector.report import build_report_payload, save_json_report, save_pdf_report
 
 
 def test_build_report_payload_structure() -> None:
@@ -44,3 +44,20 @@ def test_save_json_report(tmp_path: Path) -> None:
     data = json.loads(path.read_text(encoding="utf-8"))
     assert data["risk_level"] == "HIGH_RISK"
     assert data["url"] == "http://evil.xyz/login"
+
+
+def test_save_pdf_report(tmp_path: Path) -> None:
+    result = AnalysisResult(
+        url="http://evil.xyz/login",
+        is_valid=True,
+        risk_score=80,
+        risk_level="HIGH_RISK",
+        findings=[
+            HeuristicFinding(rule_id="suspicious_tld", score=25, message=".xyz"),
+        ],
+        recommendations=["Tiklamayin."],
+    )
+    path = save_pdf_report(result, reports_dir=tmp_path)
+    assert path.exists()
+    assert path.suffix == ".pdf"
+    assert path.stat().st_size > 0

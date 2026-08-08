@@ -222,6 +222,7 @@ __marimo__/
 # ---------------------------------------------------------------------------
 # Generated analysis reports (keep folder via reports/.gitkeep)
 reports/*.json
+reports/*.pdf
 !reports/.gitkeep
 
 # Local runtime artifacts

@@ -16,7 +16,7 @@ import tkinter as tk
 from tkinter import messagebox, ttk
 
 from detector.analyzer import AnalysisResult, analyze_url
-from detector.report import save_json_report
+from detector.report import save_json_report, save_pdf_report
 from utils.logger import get_logger
 
 logger = get_logger()
@@ -143,7 +143,7 @@ class PhishingDetectorApp(tk.Tk):
         )
         ttk.Label(
             root,
-            text="Heuristic + WHOIS tabanlı risk analizi",
+            text="Heuristic + WHOIS + HTML içerik analizi",
             style="Subtitle.TLabel",
         ).pack(anchor=tk.W, pady=(4, 18))
 
@@ -164,7 +164,12 @@ class PhishingDetectorApp(tk.Tk):
         self.save_btn = ttk.Button(
             input_row, text="JSON Kaydet", command=self.save_report, state=tk.DISABLED
         )
-        self.save_btn.pack(side=tk.LEFT)
+        self.save_btn.pack(side=tk.LEFT, padx=(0, 8))
+
+        self.save_pdf_btn = ttk.Button(
+            input_row, text="PDF Kaydet", command=self.save_pdf, state=tk.DISABLED
+        )
+        self.save_pdf_btn.pack(side=tk.LEFT)
 
         # --- Skor kartı ---
         score_card = ttk.Frame(root, style="Card.TFrame", padding=16)
@@ -231,7 +236,8 @@ class PhishingDetectorApp(tk.Tk):
         self._is_analyzing = True
         self.analyze_btn.configure(state=tk.DISABLED)
         self.save_btn.configure(state=tk.DISABLED)
-        self.status_label.configure(text="Analiz ediliyor... (WHOIS biraz sürebilir)")
+        self.save_pdf_btn.configure(state=tk.DISABLED)
+        self.status_label.configure(text="Analiz ediliyor... (WHOIS/HTML biraz sürebilir)")
         self._set_text(self.problems_text, "Çalışıyor...")
         self._set_text(self.recommendations_text, "Çalışıyor...")
 
@@ -267,6 +273,7 @@ class PhishingDetectorApp(tk.Tk):
 
         self._last_result = result
         self.save_btn.configure(state=tk.NORMAL)
+        self.save_pdf_btn.configure(state=tk.NORMAL)
 
         if not result.is_valid:
             self.score_label.configure(text="Risk Skoru: —")
@@ -301,9 +308,21 @@ class PhishingDetectorApp(tk.Tk):
             return
         try:
             path = save_json_report(self._last_result)
-            messagebox.showinfo("Kayıt başarılı", f"Rapor kaydedildi:\n{path}")
+            messagebox.showinfo("Kayıt başarılı", f"JSON rapor kaydedildi:\n{path}")
         except Exception as exc:  # noqa: BLE001
-            logger.exception("Rapor kaydı başarısız")
+            logger.exception("JSON rapor kaydı başarısız")
+            messagebox.showerror("Kayıt hatası", str(exc))
+
+    def save_pdf(self) -> None:
+        """Son analizi PDF olarak kaydet."""
+        if self._last_result is None:
+            messagebox.showinfo("Kayıt", "Önce bir analiz yapın.")
+            return
+        try:
+            path = save_pdf_report(self._last_result)
+            messagebox.showinfo("Kayıt başarılı", f"PDF rapor kaydedildi:\n{path}")
+        except Exception as exc:  # noqa: BLE001
+            logger.exception("PDF rapor kaydı başarısız")
             messagebox.showerror("Kayıt hatası", str(exc))
 
     def _paint_level(self, level: str, color: str) -> None:
