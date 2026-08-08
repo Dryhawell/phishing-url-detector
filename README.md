@@ -88,6 +88,43 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+### Editable / package install
+
+```bash
+pip install -e .
+# or with test + packaging tools:
+pip install -e ".[dev]"
+```
+
+After install you can also launch:
+
+```bash
+phishing-url-detector
+```
+
+---
+
+## Packaging
+
+### Wheel / sdist
+
+```bash
+pip install -r requirements-dev.txt
+python -m build
+```
+
+Artifacts appear under `dist/`.
+
+### Windows `.exe` (PyInstaller)
+
+```bash
+pip install -r requirements-dev.txt
+python scripts/build_exe.py
+```
+
+Output: `dist/PhishingURLDetector.exe` (windowed, one-file).  
+First build can take several minutes and the binary is large because it bundles Python + dependencies.
+
 ---
 
 ## Usage
@@ -181,9 +218,9 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 - [x] PDF report export (`PdfReportWriter`)
 - [x] Batch URL analysis (CSV/TXT input)
 - [x] Richer GUI history panel (session)
+- [x] Packaging (`pip install -e .` / PyInstaller exe helper)
 - [ ] Optional online reputation APIs (Safe Browsing / community blocklists)
 - [ ] Browser extension companion
-- [ ] Packaging (`pip install` / standalone executable)
 
 ---
 

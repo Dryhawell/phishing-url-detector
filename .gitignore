@@ -228,3 +228,9 @@ reports/*.pdf
 # Local runtime artifacts
 phishing_detector.log
 .pytest_cache/
+
+# Packaging / PyInstaller outputs
+build/
+dist/
+*.egg-info/
+*.spec

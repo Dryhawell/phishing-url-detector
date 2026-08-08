@@ -1,0 +1,47 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "phishing-url-detector"
+version = "1.1.0"
+description = "Heuristic + WHOIS + HTML content phishing URL analyzer with Tkinter GUI"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [
+  { name = "Talha Tarlabaz", email = "talhatrlbz@gmail.com" }
+]
+keywords = ["phishing", "security", "url-analysis", "osint"]
+dependencies = [
+  "requests>=2.31.0",
+  "validators>=0.22.0",
+  "tldextract>=5.1.0",
+  "python-whois>=0.9.4",
+  "beautifulsoup4>=4.12.0",
+  "fpdf2>=2.7.0",
+]
+
+[project.optional-dependencies]
+dev = [
+  "pytest>=8.0.0",
+  "pyinstaller>=6.0.0",
+]
+
+[project.scripts]
+phishing-url-detector = "main:main"
+
+[project.urls]
+Homepage = "https://github.com/Dryhawell/phishing-url-detector"
+Repository = "https://github.com/Dryhawell/phishing-url-detector"
+
+[tool.setuptools]
+py-modules = ["config", "main"]
+include-package-data = true
+
+[tool.setuptools.packages.find]
+include = ["detector*", "gui*", "utils*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

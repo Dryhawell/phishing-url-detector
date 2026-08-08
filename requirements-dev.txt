@@ -1,0 +1,6 @@
+# Geliştirme / paketleme bağımlılıkları
+# Kurulum: pip install -r requirements-dev.txt
+
+-r requirements.txt
+pyinstaller>=6.0.0
+build>=1.0.0
