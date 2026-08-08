@@ -21,6 +21,11 @@ Built for real-world defensive security workflows and as a clean portfolio proje
   - Suspicious TLDs (`.xyz`, `.top`, `.click`, `.ru`, `.tk`, `.gq`, `.ml`, `.cf`)
   - Phishing keywords (`login`, `verify`, `secure`, `account`, `update`, `bank`, `paypal`, `crypto`, …)
 - **Reputation checks** via WHOIS (domain age; graceful fallback if lookup fails)
+- **HTML content checks** via `requests` + BeautifulSoup
+  - password fields
+  - forms posting to external domains
+  - iframe usage
+  - graceful handling when the page cannot be fetched
 - **Risk scoring**
   - `0–20` → SAFE
   - `21–50` → SUSPICIOUS
@@ -43,6 +48,7 @@ phishing-url-detector/
 │   ├── analyzer.py         # Orchestrates analysis
 │   ├── heuristics.py       # URL shape / pattern rules
 │   ├── reputation.py       # WHOIS / domain age
+│   ├── content.py          # HTML content signals
 │   └── report.py           # JSON report writer (+ PDF stub)
 ├── gui/
 │   └── app.py              # Tkinter dark UI

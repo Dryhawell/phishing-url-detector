@@ -5,6 +5,7 @@ from __future__ import annotations
 from unittest.mock import patch
 
 from detector.analyzer import analyze_url
+from detector.content import ContentResult
 from detector.reputation import ReputationResult
 
 
@@ -12,7 +13,11 @@ from detector.reputation import ReputationResult
     "detector.analyzer.run_reputation_checks",
     return_value=ReputationResult(),
 )
-def test_analyze_safe_url(_mock_rep) -> None:
+@patch(
+    "detector.analyzer.run_content_checks",
+    return_value=ContentResult(),
+)
+def test_analyze_safe_url(_mock_content, _mock_rep) -> None:
     result = analyze_url("https://www.example.com")
     assert result.is_valid is True
     assert result.risk_level == "SAFE"
@@ -23,7 +28,11 @@ def test_analyze_safe_url(_mock_rep) -> None:
     "detector.analyzer.run_reputation_checks",
     return_value=ReputationResult(),
 )
-def test_analyze_high_risk_url(_mock_rep) -> None:
+@patch(
+    "detector.analyzer.run_content_checks",
+    return_value=ContentResult(),
+)
+def test_analyze_high_risk_url(_mock_content, _mock_rep) -> None:
     result = analyze_url("http://192.168.1.1/login.xyz")
     assert result.is_valid is True
     assert result.risk_score >= 51

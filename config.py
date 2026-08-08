@@ -30,10 +30,24 @@ RISK_SCORES: Final[dict[str, int]] = {
     # İtibar (reputation) sinyalleri — WHOIS / domain yaşı
     "very_new_domain": 25,
     "whois_unavailable": 5,
+    # HTML içerik sinyalleri (requests + BeautifulSoup)
+    "password_field": 20,
+    "external_form_action": 25,
+    "iframe_present": 10,
+    "content_fetch_failed": 5,
 }
 
 # Domain bu günden daha yeni ise (gün cinsinden) "çok yeni" sayılır.
 NEW_DOMAIN_DAYS: Final[int] = 30
+
+# HTML içerik analizini aç/kapa (testlerde kapatmak kolay olsun).
+ENABLE_CONTENT_ANALYSIS: Final[bool] = True
+
+# Sayfa indirme zaman aşımı (saniye).
+CONTENT_FETCH_TIMEOUT: Final[int] = 5
+
+# İndirilecek HTML üst boyutu (bayt) — bellek koruması.
+CONTENT_MAX_BYTES: Final[int] = 500_000
 
 # ---------------------------------------------------------------------------
 # Eşik değerler (threshold)

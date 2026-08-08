@@ -15,6 +15,7 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 
 from config import MAX_RISK_SCORE, get_risk_level
+from detector.content import run_content_checks
 from detector.heuristics import HeuristicFinding, run_heuristics
 from detector.reputation import run_reputation_checks
 from utils.helpers import is_valid_url, normalize_url
@@ -88,6 +89,18 @@ def _build_recommendations(result: AnalysisResult) -> list[str]:
         tips.append(
             "Domain kayıt bilgisi doğrulanamadı; bağlantıya ek ihtiyatla yaklaşın."
         )
+    if "password_field" in rule_ids:
+        tips.append(
+            "Şifre isteyen sayfalarda adres çubuğundaki domain'i resmi siteyle karşılaştırın."
+        )
+    if "external_form_action" in rule_ids:
+        tips.append(
+            "Form başka bir domain'e veri gönderiyor olabilir; bu klasik bir phishing işaretidir."
+        )
+    if "iframe_present" in rule_ids:
+        tips.append(
+            "iframe ile gömülü içerik manipülasyonu olabilir; kaynağı doğrulamadan giriş yapmayın."
+        )
     if result.risk_level == "HIGH_RISK":
         tips.append("Bu bağlantıya tıklamayın; şifre veya kart bilgisi girmeyin.")
     elif result.risk_level == "SUSPICIOUS":
@@ -136,8 +149,9 @@ def analyze_url(raw_url: str) -> AnalysisResult:
 
     heuristic_result = run_heuristics(normalized)
     reputation_result = run_reputation_checks(normalized)
+    content_result = run_content_checks(normalized)
 
-    # İtibar bulgularını aynı findings listesine taşı (GUI tek liste görür).
+    # Tüm katman bulgularını tek listeye birleştir (GUI tek panel görür).
     merged_findings = list(heuristic_result.findings)
     for item in reputation_result.findings:
         merged_findings.append(
@@ -147,8 +161,20 @@ def analyze_url(raw_url: str) -> AnalysisResult:
                 message=item.message,
             )
         )
+    for item in content_result.findings:
+        merged_findings.append(
+            HeuristicFinding(
+                rule_id=item.rule_id,
+                score=item.score,
+                message=item.message,
+            )
+        )
 
-    raw_score = heuristic_result.total_score + reputation_result.total_score
+    raw_score = (
+        heuristic_result.total_score
+        + reputation_result.total_score
+        + content_result.total_score
+    )
     score = _clamp_score(raw_score)
     level = get_risk_level(score)
 
