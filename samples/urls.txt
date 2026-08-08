@@ -1,0 +1,8 @@
+# Örnek URL listesi — batch analizi için
+# Kullanım: python main.py --batch samples/urls.txt
+
+https://www.example.com
+http://192.168.1.1/login
+http://secure-login.paypal-verify.xyz/update
+https://apple.com@evil.tk/account
+not a url

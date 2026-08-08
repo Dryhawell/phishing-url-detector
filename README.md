@@ -32,6 +32,7 @@ Built for real-world defensive security workflows and as a clean portfolio proje
   - `51–100` → HIGH RISK
 - **Dark cyber-themed Tkinter GUI** (green / yellow / red status colors)
 - **JSON and PDF reports** (shared `ReportWriter` interface)
+- **Batch analysis** from TXT/CSV files (`--batch`)
 - **Structured logging**
 - **Unit tests** with mocked network calls
 
@@ -49,9 +50,11 @@ phishing-url-detector/
 │   ├── heuristics.py       # URL shape / pattern rules
 │   ├── reputation.py       # WHOIS / domain age
 │   ├── content.py          # HTML content signals
-│   └── report.py           # JSON report writer (+ PDF stub)
+│   ├── batch.py            # Bulk TXT/CSV analysis
+│   └── report.py           # JSON/PDF report writers
 ├── gui/
 │   └── app.py              # Tkinter dark UI
+├── samples/                # Example URL lists for batch mode
 ├── utils/
 │   ├── helpers.py          # Parsing helpers
 │   └── logger.py           # Shared logging setup
@@ -98,6 +101,18 @@ python main.py
 2. Click **Analiz Et** (or press Enter)  
 3. Review **Risk Skoru**, **Durum**, problems, and recommendations  
 4. Optionally click **JSON Kaydet** or **PDF Kaydet** to export under `reports/`
+
+### Batch mode (TXT / CSV)
+
+```bash
+python main.py --batch samples/urls.txt
+python main.py --batch samples/urls.csv --output reports/my_batch.json
+```
+
+- `.txt`: one URL per line (`#` comments allowed)
+- `.csv`: reads the `url` column by default (`--csv-column` to override)
+- Writes a summary JSON with SAFE / SUSPICIOUS / HIGH_RISK / INVALID counts
+- Each item includes a short `url_hash` (SHA-256 fingerprint)
 
 ### Programmatic (quick check)
 
@@ -163,8 +178,8 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 ## Roadmap / Future Plans
 
 - [x] PDF report export (`PdfReportWriter`)
+- [x] Batch URL analysis (CSV/TXT input)
 - [ ] Optional online reputation APIs (Safe Browsing / community blocklists)
-- [ ] Batch URL analysis (CSV/TXT input)
 - [ ] Browser extension companion
 - [ ] Packaging (`pip install` / standalone executable)
 - [ ] Richer GUI history panel

@@ -1,0 +1,4 @@
+url,note
+https://www.example.com,safe-demo
+http://evil.com//secure.bank.com,obfuscation-demo
+http://login.suspicious.xyz/verify,tld-demo
