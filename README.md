@@ -26,6 +26,9 @@ Built for real-world defensive security workflows and as a clean portfolio proje
   - forms posting to external domains
   - iframe usage
   - graceful handling when the page cannot be fetched
+- **Online reputation checks**
+  - URLhaus (abuse.ch) — no API key required
+  - Google Safe Browsing v4 — optional via `GOOGLE_SAFE_BROWSING_API_KEY`
 - **Risk scoring**
   - `0–20` → SAFE
   - `21–50` → SUSPICIOUS
@@ -50,6 +53,7 @@ phishing-url-detector/
 │   ├── heuristics.py       # URL shape / pattern rules
 │   ├── reputation.py       # WHOIS / domain age
 │   ├── content.py          # HTML content signals
+│   ├── online_reputation.py# URLhaus / Safe Browsing providers
 │   ├── batch.py            # Bulk TXT/CSV analysis
 │   └── report.py           # JSON/PDF report writers
 ├── gui/
@@ -209,7 +213,16 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 - `SUSPICIOUS_TLDS`
 - `PHISHING_KEYWORDS`
 - `NEW_DOMAIN_DAYS`
+- `ENABLE_CONTENT_ANALYSIS` / `ENABLE_ONLINE_REPUTATION`
 - length / subdomain / digit thresholds
+
+Optional Safe Browsing:
+
+```bash
+# Windows PowerShell
+$env:GOOGLE_SAFE_BROWSING_API_KEY="your_key_here"
+python main.py
+```
 
 ---
 
@@ -219,7 +232,7 @@ Tune scoring and thresholds in `config.py` without touching core logic:
 - [x] Batch URL analysis (CSV/TXT input)
 - [x] Richer GUI history panel (session)
 - [x] Packaging (`pip install -e .` / PyInstaller exe helper)
-- [ ] Optional online reputation APIs (Safe Browsing / community blocklists)
+- [x] Optional online reputation APIs (URLhaus + Safe Browsing)
 - [ ] Browser extension companion
 
 ---

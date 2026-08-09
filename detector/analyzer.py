@@ -17,6 +17,7 @@ from dataclasses import dataclass, field
 from config import MAX_RISK_SCORE, get_risk_level
 from detector.content import run_content_checks
 from detector.heuristics import HeuristicFinding, run_heuristics
+from detector.online_reputation import run_online_reputation_checks
 from detector.reputation import run_reputation_checks
 from utils.helpers import is_valid_url, normalize_url
 from utils.logger import get_logger
@@ -101,6 +102,14 @@ def _build_recommendations(result: AnalysisResult) -> list[str]:
         tips.append(
             "iframe ile gömülü içerik manipülasyonu olabilir; kaynağı doğrulamadan giriş yapmayın."
         )
+    if "listed_on_urlhaus" in rule_ids or "listed_on_safe_browsing" in rule_ids:
+        tips.append(
+            "URL topluluk/blocklist'te işaretli; kesinlikle ziyaret etmeyin ve bildirin."
+        )
+    if "online_reputation_error" in rule_ids:
+        tips.append(
+            "Çevrimiçi itibar servisine ulaşılamadı; yerel sinyallere daha fazla ağırlık verin."
+        )
     if result.risk_level == "HIGH_RISK":
         tips.append("Bu bağlantıya tıklamayın; şifre veya kart bilgisi girmeyin.")
     elif result.risk_level == "SUSPICIOUS":
@@ -150,6 +159,7 @@ def analyze_url(raw_url: str) -> AnalysisResult:
     heuristic_result = run_heuristics(normalized)
     reputation_result = run_reputation_checks(normalized)
     content_result = run_content_checks(normalized)
+    online_result = run_online_reputation_checks(normalized)
 
     # Tüm katman bulgularını tek listeye birleştir (GUI tek panel görür).
     merged_findings = list(heuristic_result.findings)
@@ -169,11 +179,20 @@ def analyze_url(raw_url: str) -> AnalysisResult:
                 message=item.message,
             )
         )
+    for item in online_result.findings:
+        merged_findings.append(
+            HeuristicFinding(
+                rule_id=item.rule_id,
+                score=item.score,
+                message=item.message,
+            )
+        )
 
     raw_score = (
         heuristic_result.total_score
         + reputation_result.total_score
         + content_result.total_score
+        + online_result.total_score
     )
     score = _clamp_score(raw_score)
     level = get_risk_level(score)

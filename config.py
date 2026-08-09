@@ -35,6 +35,10 @@ RISK_SCORES: Final[dict[str, int]] = {
     "external_form_action": 25,
     "iframe_present": 10,
     "content_fetch_failed": 5,
+    # Çevrimiçi itibar (URLhaus / Safe Browsing)
+    "listed_on_urlhaus": 40,
+    "listed_on_safe_browsing": 40,
+    "online_reputation_error": 3,
 }
 
 # Domain bu günden daha yeni ise (gün cinsinden) "çok yeni" sayılır.
@@ -48,6 +52,16 @@ CONTENT_FETCH_TIMEOUT: Final[int] = 5
 
 # İndirilecek HTML üst boyutu (bayt) — bellek koruması.
 CONTENT_MAX_BYTES: Final[int] = 500_000
+
+# Çevrimiçi blocklist sorgularını aç/kapa.
+ENABLE_ONLINE_REPUTATION: Final[bool] = True
+
+# URLhaus / Safe Browsing HTTP zaman aşımı (saniye).
+ONLINE_REPUTATION_TIMEOUT: Final[int] = 5
+
+# Google Safe Browsing API anahtarı ortam değişkeni adı.
+# Anahtar yoksa Safe Browsing atlanır; URLhaus çalışmaya devam eder.
+SAFE_BROWSING_API_KEY_ENV: Final[str] = "GOOGLE_SAFE_BROWSING_API_KEY"
 
 # ---------------------------------------------------------------------------
 # Eşik değerler (threshold)
