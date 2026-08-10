@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="tr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Phishing URL Detector</title>
+    <link rel="stylesheet" href="popup.css" />
+  </head>
+  <body>
+    <header>
+      <h1>Phishing URL Detector</h1>
+      <p class="subtitle">Hızlı sezgisel kontrol (istemci tarafı)</p>
+    </header>
+
+    <section class="card">
+      <label for="urlInput">URL</label>
+      <input id="urlInput" type="text" spellcheck="false" />
+      <button id="analyzeBtn" type="button">Analiz Et</button>
+    </section>
+
+    <section class="card result">
+      <div id="scoreLine" class="score">Risk Skoru: —</div>
+      <div id="levelLine" class="level">Durum: Bekleniyor</div>
+      <h2>Problemler</h2>
+      <ul id="problemsList"></ul>
+      <p id="note" class="note">
+        Bu eklenti Python aracının hafif tamamlayıcısıdır. WHOIS / HTML / blocklist
+        için masaüstü uygulamayı kullanın.
+      </p>
+    </section>
+
+    <script src="heuristics.js"></script>
+    <script src="popup.js"></script>
+  </body>
+</html>

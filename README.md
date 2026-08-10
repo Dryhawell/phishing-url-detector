@@ -4,7 +4,7 @@ A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HT
 
 Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
 
-**Current version:** `1.2.0` — see [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `1.3.0` — see [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -38,6 +38,7 @@ Built for defensive security workflows and as a clean portfolio project (PEP 8, 
 - **Dark cyber-themed Tkinter GUI** (green / yellow / red status colors)
 - **JSON and PDF reports** (shared `ReportWriter` interface)
 - **Batch analysis** from TXT/CSV files (`--batch`)
+- **Browser extension companion** (Chrome/Edge MV3, client-side heuristics)
 - **Structured logging**
 - **Unit tests** with mocked network calls
 
@@ -61,6 +62,7 @@ phishing-url-detector/
 ├── gui/
 │   ├── app.py              # Tkinter dark UI
 │   └── history.py          # In-session analysis history
+├── browser-extension/      # Chrome/Edge MV3 companion
 ├── samples/                # Example URL lists for batch mode
 ├── utils/
 │   ├── helpers.py          # Parsing helpers
@@ -158,6 +160,14 @@ python main.py --batch samples/urls.csv --output reports/my_batch.json
 - Writes a summary JSON with SAFE / SUSPICIOUS / HIGH_RISK / INVALID counts
 - Each item includes a short `url_hash` (SHA-256 fingerprint)
 
+### Browser extension
+
+See [`browser-extension/README.md`](browser-extension/README.md).
+
+```text
+chrome://extensions → Developer mode → Load unpacked → browser-extension/
+```
+
 ### Programmatic (quick check)
 
 ```python
@@ -235,7 +245,7 @@ python main.py
 - [x] Richer GUI history panel (session)
 - [x] Packaging (`pip install -e .` / PyInstaller exe helper)
 - [x] Optional online reputation APIs (URLhaus + Safe Browsing)
-- [ ] Browser extension companion (separate frontend project)
+- [x] Browser extension companion (Manifest V3, client-side heuristics)
 
 ---
 
