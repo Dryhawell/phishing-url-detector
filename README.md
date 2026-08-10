@@ -1,10 +1,12 @@
 # Phishing URL Detector
 
+[![CI](https://github.com/Dryhawell/phishing-url-detector/actions/workflows/ci.yml/badge.svg)](https://github.com/Dryhawell/phishing-url-detector/actions/workflows/ci.yml)
+
 A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HTML content checks, and optional online blocklists — then produces a risk score, clear findings, actionable recommendations, and JSON/PDF reports.
 
 Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
 
-**Current version:** `1.4.1` — see [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `1.4.2` — see [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -264,6 +266,7 @@ This repository was built step-by-step as a teaching project covering:
 - GUI threading so long I/O does not freeze the UI
 - unit testing with mocks for WHOIS/HTTP/blocklists
 - packaging (`pyproject.toml`) and optional PyInstaller builds
+- CI with GitHub Actions
 
 ---
 
