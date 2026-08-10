@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.1] - 2026-08-10
+
+### Added
+- Browser extension icons (`16/48/128`)
+- README GUI preview image (`docs/screenshot.png`)
+- `scripts/generate_assets.py` to regenerate visual assets
+
 ## [1.4.0] - 2026-08-10
 
 ### Added
@@ -51,6 +58,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Unit test suite (mocked network where needed)
 - Professional README
 
+[1.4.1]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.1
 [1.4.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.0
 [1.3.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.3.0
 [1.2.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.2.0

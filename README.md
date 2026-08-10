@@ -4,7 +4,7 @@ A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HT
 
 Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
 
-**Current version:** `1.4.0` — see [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `1.4.1` — see [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -215,15 +215,10 @@ Nedenler
 
 ## Screenshot
 
-Capture the GUI after a high-risk analysis and save it as:
-
-`docs/screenshot.png`
-
-Then it will render below:
-
 ![Phishing URL Detector GUI](docs/screenshot.png)
 
-If the image is not uploaded yet, GitHub will show a broken-image placeholder until you add the file.
+> Preview asset generated for documentation. You can replace it with a real capture from `python main.py`.
+
 
 ---
 

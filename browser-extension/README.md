@@ -52,7 +52,14 @@ Same idea as Python heuristics:
 - No online blocklists
 - Domain parsing is simplified (not `tldextract`)
 
-## Sync with Python scores
+## Icons
+
+Icons live in `icons/icon{16,48,128}.png` and are referenced by `manifest.json`.
+Regenerate with:
+
+```bash
+python scripts/generate_assets.py
+```
 
 Risk weights mirror `config.py` as of v1.2. If you change Python scores,
 update `heuristics.js` `RISK_SCORES` to keep both tools aligned.
