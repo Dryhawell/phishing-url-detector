@@ -3,7 +3,8 @@
 Kullanım:
     python main.py
     python main.py --batch samples/urls.txt
-    python main.py --batch samples/urls.csv --output reports/my_batch.json
+    python main.py --api
+    python main.py --api --port 8765
 """
 
 from __future__ import annotations
@@ -11,6 +12,7 @@ from __future__ import annotations
 import argparse
 from pathlib import Path
 
+from api.server import DEFAULT_HOST, DEFAULT_PORT, run_api_server
 from detector.batch import run_batch_file
 from gui.app import run_app
 from utils.logger import setup_logger
@@ -19,7 +21,7 @@ from utils.logger import setup_logger
 def build_parser() -> argparse.ArgumentParser:
     """Komut satırı argümanlarını tanımla."""
     parser = argparse.ArgumentParser(
-        description="Phishing URL Detector — GUI veya toplu analiz",
+        description="Phishing URL Detector — GUI, batch veya yerel API",
     )
     parser.add_argument(
         "--batch",
@@ -35,6 +37,22 @@ def build_parser() -> argparse.ArgumentParser:
         "--csv-column",
         default="url",
         help="CSV içindeki URL sütun adı (varsayılan: url)",
+    )
+    parser.add_argument(
+        "--api",
+        action="store_true",
+        help="Yerel REST API sunucusunu başlat (eklenti köprüsü)",
+    )
+    parser.add_argument(
+        "--host",
+        default=DEFAULT_HOST,
+        help=f"API host (varsayılan: {DEFAULT_HOST})",
+    )
+    parser.add_argument(
+        "--port",
+        type=int,
+        default=DEFAULT_PORT,
+        help=f"API port (varsayılan: {DEFAULT_PORT})",
     )
     return parser
 
@@ -59,12 +77,16 @@ def run_batch_mode(args: argparse.Namespace) -> int:
 
 
 def main() -> None:
-    """GUI (varsayılan) veya batch modunu başlat."""
+    """GUI (varsayılan), batch veya API modunu başlat."""
     parser = build_parser()
     args = parser.parse_args()
 
     if args.batch is not None:
         raise SystemExit(run_batch_mode(args))
+
+    if args.api:
+        run_api_server(host=args.host, port=args.port)
+        return
 
     run_app()
 

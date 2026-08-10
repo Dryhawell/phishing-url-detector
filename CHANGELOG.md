@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.0] - 2026-08-10
+
+### Added
+- Local Flask API (`python main.py --api`) on `127.0.0.1:8765`
+- Extension **Derin Analiz** button calling the local Python analyzer
+- `/health` and `/analyze` endpoints with CORS for the MV3 popup
+
 ## [1.3.0] - 2026-08-10
 
 ### Added
@@ -44,6 +51,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Unit test suite (mocked network where needed)
 - Professional README
 
+[1.4.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.0
 [1.3.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.3.0
 [1.2.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.2.0
 [1.1.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.1.0

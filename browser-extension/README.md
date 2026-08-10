@@ -13,6 +13,24 @@ sezgisel kurallarla puanlar.
 3. Click **Load unpacked**
 4. Select this folder: `browser-extension/`
 
+## Modes
+
+### Quick analysis (default)
+Client-side heuristics only — works offline, no Python process required.
+
+### Deep analysis (Python API)
+1. In a terminal from the repo root:
+
+```bash
+pip install -r requirements.txt
+python main.py --api
+```
+
+2. Click **Derin Analiz (Python API)** in the popup.
+
+The extension calls `POST http://127.0.0.1:8765/analyze`.
+This unlocks WHOIS / HTML / URLhaus / optional Safe Browsing from the Python engine.
+
 ## Usage
 
 1. Open any tab

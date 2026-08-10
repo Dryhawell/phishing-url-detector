@@ -73,10 +73,25 @@ button {
   color: var(--fg);
   font-weight: 600;
   cursor: pointer;
+  margin-bottom: 6px;
+}
+
+button.secondary {
+  background: #1a2438;
+  border: 1px solid var(--border);
 }
 
 button:hover {
   background: #1a5c50;
+}
+
+button.secondary:hover {
+  background: #243049;
+}
+
+button:disabled {
+  opacity: 0.6;
+  cursor: wait;
 }
 
 .score {

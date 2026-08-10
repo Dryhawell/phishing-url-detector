@@ -4,7 +4,7 @@ A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HT
 
 Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
 
-**Current version:** `1.3.0` — see [CHANGELOG.md](CHANGELOG.md).
+**Current version:** `1.4.0` — see [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -62,6 +62,8 @@ phishing-url-detector/
 ├── gui/
 │   ├── app.py              # Tkinter dark UI
 │   └── history.py          # In-session analysis history
+├── api/
+│   └── server.py           # Local REST API for the browser extension
 ├── browser-extension/      # Chrome/Edge MV3 companion
 ├── samples/                # Example URL lists for batch mode
 ├── utils/
@@ -159,6 +161,14 @@ python main.py --batch samples/urls.csv --output reports/my_batch.json
 - `.csv`: reads the `url` column by default (`--csv-column` to override)
 - Writes a summary JSON with SAFE / SUSPICIOUS / HIGH_RISK / INVALID counts
 - Each item includes a short `url_hash` (SHA-256 fingerprint)
+
+### Local API (extension bridge)
+
+```bash
+python main.py --api
+# http://127.0.0.1:8765/health
+# POST /analyze  {"url":"https://example.com"}
+```
 
 ### Browser extension
 
