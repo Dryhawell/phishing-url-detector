@@ -1,8 +1,10 @@
 # Phishing URL Detector
 
-A modular Python tool that analyzes URLs with heuristic rules and WHOIS-based reputation signals, then produces a risk score, clear findings, and actionable recommendations.
+A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HTML content checks, and optional online blocklists — then produces a risk score, clear findings, actionable recommendations, and JSON/PDF reports.
 
-Built for real-world defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, extensible report layer).
+Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
+
+**Current version:** `1.2.0` — see [CHANGELOG.md](CHANGELOG.md).
 
 ---
 
@@ -233,7 +235,20 @@ python main.py
 - [x] Richer GUI history panel (session)
 - [x] Packaging (`pip install -e .` / PyInstaller exe helper)
 - [x] Optional online reputation APIs (URLhaus + Safe Browsing)
-- [ ] Browser extension companion
+- [ ] Browser extension companion (separate frontend project)
+
+---
+
+## Learning notes (portfolio)
+
+This repository was built step-by-step as a teaching project covering:
+
+- modular package layout and SOLID-friendly boundaries
+- config-driven scoring instead of magic numbers
+- logging, reporting, and graceful network failure handling
+- GUI threading so long I/O does not freeze the UI
+- unit testing with mocks for WHOIS/HTTP/blocklists
+- packaging (`pyproject.toml`) and optional PyInstaller builds
 
 ---
 
