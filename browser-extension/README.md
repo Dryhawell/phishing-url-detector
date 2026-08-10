@@ -61,5 +61,7 @@ Regenerate with:
 python scripts/generate_assets.py
 ```
 
+## Sync with Python scores
+
 Risk weights mirror `config.py` as of v1.2. If you change Python scores,
 update `heuristics.js` `RISK_SCORES` to keep both tools aligned.
