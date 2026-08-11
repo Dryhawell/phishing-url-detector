@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 ### Added
 - GitHub Actions CI workflow (pytest on Python 3.11 and 3.12)
 - CI status badge in README
+- `SECURITY.md`, `Makefile`, and portfolio checklist docs
 
 ## [1.4.1] - 2026-08-10
 
