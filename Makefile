@@ -1,4 +1,4 @@
-.PHONY: install test run api batch assets exe clean
+.PHONY: install test run api batch assets exe demo clean
 
 install:
 	python -m pip install --upgrade pip
@@ -21,6 +21,9 @@ assets:
 
 exe:
 	python scripts/build_exe.py
+
+demo:
+	powershell -ExecutionPolicy Bypass -File scripts/demo.ps1
 
 clean:
 	python -c "import shutil, pathlib; [shutil.rmtree(p, ignore_errors=True) for p in ('build','dist','.pytest_cache')];\

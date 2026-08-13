@@ -5,6 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [1.4.3] - 2026-08-13
+
+### Added
+- Dependabot for pip and GitHub Actions
+- Windows portfolio demo script (`scripts/demo.ps1`)
+- GitHub issue templates (bug / feature)
+
 ## [1.4.2] - 2026-08-10
 
 ### Added
@@ -65,6 +72,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Unit test suite (mocked network where needed)
 - Professional README
 
+[1.4.3]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.3
 [1.4.2]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.2
 [1.4.1]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.1
 [1.4.0]: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.0
