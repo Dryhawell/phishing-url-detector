@@ -5,12 +5,13 @@ All notable changes to this project are documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/).
 
-## [1.4.3] - 2026-08-13
+## [1.4.3] - 2026-08-14
 
 ### Added
 - Dependabot for pip and GitHub Actions
 - Windows portfolio demo script (`scripts/demo.ps1`)
 - GitHub issue templates (bug / feature)
+- GitHub Actions Release workflow (creates a Release when a `v*` tag is pushed)
 
 ## [1.4.2] - 2026-08-10
 

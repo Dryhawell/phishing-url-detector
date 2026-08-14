@@ -6,7 +6,7 @@ A modular Python tool that analyzes URLs with heuristic rules, WHOIS signals, HT
 
 Built for defensive security workflows and as a clean portfolio project (PEP 8, type hints, tests, packaging).
 
-**Current version:** `1.4.3` — see [CHANGELOG.md](CHANGELOG.md) · [Release notes](docs/RELEASE_v1.4.2.md) · [Tags](https://github.com/Dryhawell/phishing-url-detector/tags) · [Checklist](docs/CHECKLIST.md)
+**Current version:** `1.4.3` — see [CHANGELOG.md](CHANGELOG.md) · [Release notes](docs/RELEASE_v1.4.3.md) · [Releases](https://github.com/Dryhawell/phishing-url-detector/releases) · [Checklist](docs/CHECKLIST.md)
 
 ---
 
