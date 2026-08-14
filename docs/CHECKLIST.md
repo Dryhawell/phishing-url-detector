@@ -10,7 +10,8 @@ Use this before sharing the repo on your CV / LinkedIn.
 - [x] Annotated tags pushed (`v1.4.2`, `v1.4.3`)
 - [x] Release workflow added (auto-publish on `v*` tags)
 - [x] GitHub Release published: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.3
-- [ ] Repo description + topics set on GitHub (phishing, python, security, osint)
+- [x] Repo description + topics set on GitHub
+- [x] Portfolio demo talk track: `docs/DEMO_SCRIPT.md`
 - [ ] Optional: replace `docs/screenshot.png` with a real GUI capture
 
 ## Quick demo (Windows)

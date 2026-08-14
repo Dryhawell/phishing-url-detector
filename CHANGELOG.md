@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - Windows portfolio demo script (`scripts/demo.ps1`)
 - GitHub issue templates (bug / feature)
 - GitHub Actions Release workflow (creates a Release when a `v*` tag is pushed)
+- Portfolio interview demo talk track (`docs/DEMO_SCRIPT.md`)
 
 ## [1.4.2] - 2026-08-10
 
