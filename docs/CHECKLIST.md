@@ -7,10 +7,9 @@ Use this before sharing the repo on your CV / LinkedIn.
 - [x] Clean modular Python package layout
 - [x] Tests passing locally (`python -m pytest tests -q`)
 - [x] GitHub Actions CI green on `main`
-- [x] Annotated tag `v1.4.2` pushed
+- [x] Annotated tags pushed (`v1.4.2`, `v1.4.3`)
 - [x] Release workflow added (auto-publish on `v*` tags)
-- [ ] Confirm GitHub Release appears after pushing `v1.4.3`
-  - Releases page: https://github.com/Dryhawell/phishing-url-detector/releases
+- [x] GitHub Release published: https://github.com/Dryhawell/phishing-url-detector/releases/tag/v1.4.3
 - [ ] Repo description + topics set on GitHub (phishing, python, security, osint)
 - [ ] Optional: replace `docs/screenshot.png` with a real GUI capture
 
