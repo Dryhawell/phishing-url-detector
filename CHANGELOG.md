@@ -13,6 +13,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - GitHub issue templates (bug / feature)
 - GitHub Actions Release workflow (creates a Release when a `v*` tag is pushed)
 - Portfolio interview demo talk track (`docs/DEMO_SCRIPT.md`)
+- Turkish documentation mirror (`README.tr.md`)
 
 ## [1.4.2] - 2026-08-10
 
