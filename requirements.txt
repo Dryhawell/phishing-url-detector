@@ -4,7 +4,7 @@
 requests>=2.31.0
 validators>=0.22.0
 tldextract>=5.1.0
-python-whois>=0.9.4
+python-whois>=0.9.6
 beautifulsoup4>=4.12.0
 pytest>=8.0.0
 fpdf2>=2.7.0
